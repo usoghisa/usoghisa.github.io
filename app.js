@@ -1,7 +1,7 @@
 class PWAConfApp {
   constructor() {
-    this.speakersDiv = document.querySelector('.speakers');
-    this.scheduleDiv = document.querySelector('.schedule');
+    this.speakersDiv = document.querySelector(".speakers");
+    this.scheduleDiv = document.querySelector(".schedule");
     this.init();
   }
 
@@ -11,21 +11,21 @@ class PWAConfApp {
   }
 
   async loadSpeakers() {
-    this.speakers = await this.fetchJSON('./speakers.json');
+    this.speakers = await this.fetchJSON("./speakers.json");
 
     this.speakersDiv.innerHTML = this.speakers
       .map(this.toSpeakerBlock)
-      .join('\n');
+      .join("\n");
   }
 
   async loadSchedule() {
-    const rawSchedule = await this.fetchJSON('./schedule.json');
+    const rawSchedule = await this.fetchJSON("./schedule.json");
 
     // Add speaker details to array
     this.schedule = rawSchedule.map(this.addSpeakerDetails, this);
     this.scheduleDiv.innerHTML = this.schedule
       .map(this.toScheduleBlock)
-      .join('\n');
+      .join("\n");
   }
 
   toSpeakerBlock(speaker) {
@@ -44,7 +44,7 @@ class PWAConfApp {
           <div class="title-and-speaker">
             <div class="title">${scheduleItem.title}</div>
             <div class="speaker">${
-              scheduleItem.speaker ? scheduleItem.speaker.name : '&nbsp;'
+              scheduleItem.speaker ? scheduleItem.speaker.name : "&nbsp;"
             }</div>
           </div>
         </div>
@@ -56,7 +56,7 @@ class PWAConfApp {
   addSpeakerDetails(item) {
     if (item.speakerId) {
       return Object.assign({}, item, {
-        speaker: this.speakers.find(s => s.id === item.speakerId)
+        speaker: this.speakers.find((s) => s.id === item.speakerId),
       });
     }
     return Object.assign({}, item);
@@ -67,6 +67,20 @@ class PWAConfApp {
     return res.json();
   }
 }
-window.addEventListener('load', e => {
+//
+window.addEventListener("load", (e) => {
   new PWAConfApp();
+  registerSW();
 });
+
+async function registerSW() {
+  if ("serviceWorker" in navigator) {
+    try {
+      await navigator.serviceWorker.register("./sw.js");
+    } catch (e) {
+      alert("ServiceWorker registration failed. Sorry about that.");
+    }
+  } else {
+    document.querySelector(".alert").removeAttribute("hidden");
+  }
+}
