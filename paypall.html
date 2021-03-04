@@ -1,1 +1,81 @@
-hhhh
+<!--
+## Introduction
+Via [amp-iframe](/content/amp-dev/documentation/components/reference/amp-iframe-v0.1.md) and the `allowpaymentrequest` attribute, AMP pages can support requesting payment information directly from the browser. The PaymentRequest API is an [open W3C spec](https://www.w3.org/TR/payment-request.html) with support from most major browsers. This example won't go into detail on the API, but you can get more information in [this deep dive article](https://developers.google.com/web/fundamentals/discovery-and-monetization/payment-request/deep-dive-into-payment-request).
+
+  This example shows how to embed an iframe that contains only a "buy now" button. All of the actual payment logic is contained within the iframe src itself.
+
+-->
+<!-- -->
+<!doctype html>
+<html ⚡>
+<head>
+  <meta charset="utf-8">
+  <title>Payments in AMP</title>
+  <link rel="canonical" href="https://amp.dev/documentation/examples/e-commerce/payments_in_amp/index.html">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <script async custom-element="amp-form" src="https://cdn.ampproject.org/v0/amp-form-0.1.js"></script>
+  <!-- ## Setup -->
+  <!--
+  The only extra component needed for this example is amp-iframe. -->
+  <script async custom-element="amp-iframe" src="https://cdn.ampproject.org/v0/amp-iframe-0.1.js"></script>
+
+  <style amp-custom>
+  
+  div.paypal {
+    min-width: 400px;
+    max-width: 40px;
+    min-height: 70px;
+  } 
+  
+  
+  </style>
+
+  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+</head>
+<body>
+  <div>
+
+  </div>
+ 
+  <div class="paypal">
+    
+  
+  <amp-iframe width="93" height="26" sandbox="allow-forms allow-top-navigation"   layout="responsive" srcdoc='
+    <style>
+        html,body { margin:0; padding: 0; }
+    </style>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="PCGMMA6NDKBRQ">
+<table>
+<tr><td><input type="hidden" name="on0" value="Select Version">Select Version</td></tr><tr><td><select name="os0">
+	<option value="Version 27">Version 27 $625.00 USD</option>
+	<option value="Version 27 plus">Version 27 plus $710.00 USD</option>
+</select> </td></tr>
+</table>
+<input type="hidden" name="currency_code" value="USD">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/he_IL/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+
+'> 
+    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SQSEK8CADNPEN" placeholder>
+      
+    <amp-img layout="fill" width="144" height="77" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynowCC_LG.gif"></amp-img></a>
+  </amp-iframe> 
+  </div>
+
+  <!--
+    Tip: we add a `placeholder` element to the `amp-iframe` to ensure that it can be loaded in the top viewport. The placeholder shows a disabled button until the iframe is loaded. We also disable the [default loading animation](/advanced/custom_loading_indicators/) using CSS.
+
+    However, since AMP does not allow javascript, the iframe source must also handle the case where PaymentRequest is not available. While currently out of scope for this example, potential options are to:
+
+    1. Swap the "Buy Now" button for an "Add to cart" button.
+    2. Redirect to a standard checkout form.
+    3. Hide the "Buy Now" button altogether, and have a separate AMP-based Add to Cart button (see the [Product Page demo](/content/amp-dev/documentation/examples/documentation/Product_Page.html?format=websites#add-to-cart-button))
+  -->
+</body>
+</html>
+
